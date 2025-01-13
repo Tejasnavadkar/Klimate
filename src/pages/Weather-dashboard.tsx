@@ -1,10 +1,12 @@
-import { Coordinates } from "@/api/types"
+
+import CurrentWeather from "@/components/CurrentWeather"
 import { LoadingSkeleton } from "@/components/LoadingSkeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
-import { useReverseGeocodeQuery, useWeatherQuery } from "@/hooks/use-weatherapi"
+
+import { useForecastQuery, useReverseGeocodeQuery, useWeatherQuery } from "@/hooks/use-weatherapi"
 import { useGeoLocation } from "@/hooks/usegeoLocation"
-import { AlertCircle, AlertTriangle, MapPin, RefreshCw } from "lucide-react"
+import { AlertTriangle, MapPin, RefreshCw } from "lucide-react"
 
 
 
@@ -12,16 +14,22 @@ const WeatherDashboard = () => {
 
     const { coordinates, error: locationError, isLoading: locationLoading, getCoordinates } = useGeoLocation()  // name aliases
     
-    const location = useReverseGeocodeQuery(coordinates)
+    const locationQuery = useReverseGeocodeQuery(coordinates)
+    const WeatherQuery = useWeatherQuery(coordinates)
+    const ForcasteQuery = useForecastQuery(coordinates)
+
     console.log('coordinates--', coordinates)
-    
-       
-    console.log('location--',location)
+    console.log('locationQuery--',locationQuery)
+    console.log('WeatherQuery--',WeatherQuery)
+    console.log('ForcasteQuery--',ForcasteQuery)
     
     const handleRefresh = () => {
         getCoordinates()
         if (coordinates) {
             // refetch wheather
+            locationQuery.refetch()
+            WeatherQuery.refetch()
+            ForcasteQuery.refetch()
         }
     }
 
@@ -42,6 +50,32 @@ const WeatherDashboard = () => {
                     </Button>
                 </AlertDescription>
             </Alert>
+        )
+    }
+
+    const locationData = locationQuery?.data?.[0]
+    console.log('loc--',locationData)
+    // console.log('WeatherQuery.error--',WeatherQuery.error)
+
+    if(ForcasteQuery.error || WeatherQuery.error){
+        return (
+            <Alert variant="destructive">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertTitle>Error</AlertTitle>
+            <AlertDescription className="flex flex-col gap-3">
+                <p>failed to fetch weather data. please try again</p>
+                <Button variant={'outline'} onClick={handleRefresh} className="w-fit" >
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Retry
+                </Button>
+            </AlertDescription>
+        </Alert>
+        )
+    }
+
+    if(!WeatherQuery.data || !ForcasteQuery.data || !locationQuery.data){
+        return(
+            <LoadingSkeleton/>
         )
     }
 
@@ -71,10 +105,24 @@ const WeatherDashboard = () => {
                     variant={'outline'}
                     size={'icon'}
                     onClick={handleRefresh}
-                // disabled={}
+                    disabled={WeatherQuery.isFetching || ForcasteQuery.isFetching}
                 >
-                    <RefreshCw className="h-4 w-4" />
+                    <RefreshCw className={`h-4 w-4 ${WeatherQuery.isFetching || ForcasteQuery.isFetching ? 'animate-spin' : ''} `} />
                 </Button>
+            </div>
+
+            <div className="grid gap-6 ">
+                <div className="">
+                 {/* current weather */}
+                 {/* hourly temp  */}
+                 <CurrentWeather weatherData={WeatherQuery.data} locationData={locationData} />
+                 {/* <div className="border border-red-700"></div> */}
+                </div>
+
+                <div>
+                    {/* detail  */}
+                    {/* forcaste  */}
+                </div>
             </div>
         </div>
     )

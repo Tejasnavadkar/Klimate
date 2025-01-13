@@ -51,7 +51,7 @@ class WeatherAPI{     // to create private functions
 
         async reverseGeocode({lat,lon}:Coordinates):Promise<GeocodingResponse[]>{
 
-            const url = this.createUrl(`${API_CONFIG.GEO}/geo`,{
+            const url = this.createUrl(`${API_CONFIG.GEO}/reverse`,{
                 lat:lat.toString(),
                 lon:lon.toString(),
                 limit:1

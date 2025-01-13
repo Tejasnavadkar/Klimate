@@ -13,8 +13,8 @@ function App() {
   const queryClient = new QueryClient({
     defaultOptions:{
       queries:{
-        staleTime: 5 * 60 * 1000,  // if visit page and then go to another page and again you came back to the same page under 5min data not refetch it cached it but if you come after 5min it refetch then 
-        gcTime: 10 * 60 * 1000,  // here after 10 min delete cached data
+        staleTime: 5 * 60 * 1000, // 5 min  // if visit page and then go to another page and again you came back to the same page under 5min data not refetch it cached it but if you come after 5min it refetch then 
+        gcTime: 10 * 60 * 1000,  // 10 min // here after 10 min delete cached data
         retry:false, // if you set true then if query fail then automaticaly retry
         refetchOnWindowFocus:false  // if true on different window size refetch
       }
