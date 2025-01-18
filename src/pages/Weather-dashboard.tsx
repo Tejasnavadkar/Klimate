@@ -1,5 +1,6 @@
 
 import CurrentWeather from "@/components/CurrentWeather"
+import HourlyTemp from "@/components/houely-temperture"
 import { LoadingSkeleton } from "@/components/LoadingSkeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
@@ -44,7 +45,7 @@ const WeatherDashboard = () => {
                 <AlertTitle>Location Error</AlertTitle>
                 <AlertDescription className="flex flex-col gap-3">
                     <p>{locationError}</p>
-                    <Button variant={'outline'} onClick={getCoordinates} className="w-fit" >
+                    <Button variant={'outline'} onClick={getCoordinates} className="w-fit">
                         <MapPin className="h-4 w-4 mr-2" />
                         Enable Location
                     </Button>
@@ -112,11 +113,12 @@ const WeatherDashboard = () => {
             </div>
 
             <div className="grid gap-6 ">
-                <div className="">
+                <div className="flex flex-col md:flex-row gap-2">
                  {/* current weather */}
-                 {/* hourly temp  */}
                  <CurrentWeather weatherData={WeatherQuery.data} locationData={locationData} />
-                 {/* <div className="border border-red-700"></div> */}
+                 {/* hourly temp takes forcast data */}
+                  <HourlyTemp forcastData={ForcasteQuery.data} />
+                
                 </div>
 
                 <div>

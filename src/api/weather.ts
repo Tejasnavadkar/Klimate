@@ -6,7 +6,7 @@ class WeatherAPI{     // to create private functions
 
     private createUrl(endpoint:string,params:Record<string,string | number>){  // this function will create url
 
-        const searchParams = new URLSearchParams({
+        const searchParams = new URLSearchParams({  // this is class that used to handle query params (&,&) like this appid=my-api-key&lat=18.512&lon=73.8359&units=metric
             appid:API_CONFIG.API_KEY,
             ...params
         })
@@ -32,7 +32,7 @@ class WeatherAPI{     // to create private functions
     const url = this.createUrl(`${API_CONFIG.BASE_URL}/weather`,{
         lat:lat.toString(),
         lon:lon.toString(),
-        units:API_CONFIG.DEFAULT_PARAMS.units,
+        units:API_CONFIG.DEFAULT_PARAMS.units,  // With units=metric: Temperatures are returned in Celsius. otherwise return in kelvin
     })
      return this.fetchData<WeatherData>(url)
     }
