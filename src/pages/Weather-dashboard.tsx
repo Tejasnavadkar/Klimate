@@ -4,6 +4,7 @@ import HourlyTemp from "@/components/houely-temperture"
 import { LoadingSkeleton } from "@/components/LoadingSkeleton"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import WeatherDetails from "@/components/WeatherDetails"
 
 import { useForecastQuery, useReverseGeocodeQuery, useWeatherQuery } from "@/hooks/use-weatherapi"
 import { useGeoLocation } from "@/hooks/usegeoLocation"
@@ -19,10 +20,10 @@ const WeatherDashboard = () => {
     const WeatherQuery = useWeatherQuery(coordinates)
     const ForcasteQuery = useForecastQuery(coordinates)
 
-    console.log('coordinates--', coordinates)
-    console.log('locationQuery--',locationQuery)
-    console.log('WeatherQuery--',WeatherQuery)
-    console.log('ForcasteQuery--',ForcasteQuery)
+    // console.log('coordinates--', coordinates)
+    // console.log('locationQuery--',locationQuery)
+    // console.log('WeatherQuery--',WeatherQuery)
+    // console.log('ForcasteQuery--',ForcasteQuery)
     
     const handleRefresh = () => {
         getCoordinates()
@@ -55,7 +56,7 @@ const WeatherDashboard = () => {
     }
 
     const locationData = locationQuery?.data?.[0]
-    console.log('loc--',locationData)
+    // console.log('loc--',locationData)
     // console.log('WeatherQuery.error--',WeatherQuery.error)
 
     if(ForcasteQuery.error || WeatherQuery.error){
@@ -118,12 +119,12 @@ const WeatherDashboard = () => {
                  <CurrentWeather weatherData={WeatherQuery.data} locationData={locationData} />
                  {/* hourly temp takes forcast data */}
                   <HourlyTemp forcastData={ForcasteQuery.data} />
-                
                 </div>
 
                 <div>
-                    {/* detail  */}
-                    {/* forcaste  */}
+                     {/* detail  */}
+                     <WeatherDetails Data={WeatherQuery.data}/>
+                    {/* forcaste */}
                 </div>
             </div>
         </div>

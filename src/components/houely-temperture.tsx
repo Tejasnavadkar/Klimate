@@ -13,6 +13,7 @@ interface HourlyTempProps {
 
 const HourlyTemp = ({ forcastData }: HourlyTempProps) => {
 
+    // console.log('forcastData--',forcastData.list)
     const chartData = forcastData.list.slice(0, 9).map((item) => {  // 24hr chart 8 slots of 3hr
         return {
             time: format(new Date(item.dt * 1000), "ha"),  // ha means h=hour and a=am/pm
@@ -20,6 +21,7 @@ const HourlyTemp = ({ forcastData }: HourlyTempProps) => {
             feels_like: Math.round(item.main.feels_like),
         }
     })
+    // console.log('chartData--',chartData)
 
     return (
         <Card className="flex-1">
@@ -50,12 +52,9 @@ const HourlyTemp = ({ forcastData }: HourlyTempProps) => {
                             />
 
                             <Tooltip
-
                                 content={({ active, payload }) => {
-                                    
-
                                     if (active && payload && payload.length) {
-                                        console.log('payload--',payload)
+                                        // console.log('payload--',payload)
                                         return (
                                             <div className="bg-background p-2 border rounded-lg flex gap-2">
 
@@ -68,14 +67,12 @@ const HourlyTemp = ({ forcastData }: HourlyTempProps) => {
                                                     <span className="text-[0.70rem] text-muted-foreground" >Feels Like</span>
                                                     <span>{payload[1].value}°</span>
                                                 </div>
-
                                             </div>
                                         )
                                     }else{
                                         return null
                                     }
                                 }}
-
                             />
 
                             <Line

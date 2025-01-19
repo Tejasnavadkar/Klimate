@@ -40,13 +40,13 @@ export const useReverseGeocodeQuery = (Coordinates:Coordinates) =>{
         queryKey:WEATHER_KEY.location(Coordinates ?? {lat:0,lon:0}),
         // queryFn:()=> Coordinates ? weatherAPI.reverseGeocode(Coordinates) : null,
         queryFn: async () => {
-            console.log('hii')
+            // console.log('hii')
             if (Coordinates) {
-                console.log('hii22')
+                // console.log('hii22')
                 try {
-                    console.log('hii3333333')
+                    // console.log('hii3333333')
                     const result = await weatherAPI.reverseGeocode(Coordinates);
-                    console.log('hii44444444444') // controll not reach here
+                    // console.log('hii44444444444') // controll not reach here
                     console.log('Reverse geocode result:', result); // Check the actual result here
                     return result; // Ensure it is returned correctly
                 } catch (error) {
