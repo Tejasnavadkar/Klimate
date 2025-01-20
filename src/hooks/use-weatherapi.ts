@@ -7,6 +7,7 @@ export const WEATHER_KEY = {
     weather:(coords:Coordinates)=> ["weather",coords] as const,
     forcaste:(coords:Coordinates)=> ["forcaste",coords] as const,
     location:(coords:Coordinates) => ["location",coords] as const,
+    search:(query:string)=>["Search-Location",query]
 } as const  // so not changed further
 
 export const useWeatherQuery = (Coordinates:Coordinates) =>{
@@ -58,6 +59,18 @@ export const useReverseGeocodeQuery = (Coordinates:Coordinates) =>{
             return null;
         },
         enabled:!!Coordinates
+    })
+}
+
+export const useSearchLocationQuery = (query:string) =>{
+
+    return useQuery({
+        queryKey:WEATHER_KEY.search(query),
+        queryFn:async ()=> {
+          const result = await weatherAPI.searchLocation(query)
+          return result
+        },
+        enabled:query.length > 3 // meanse it will only run when query string contains morw than 3 letters
     })
 }
 
