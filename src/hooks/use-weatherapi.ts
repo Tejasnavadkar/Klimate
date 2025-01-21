@@ -70,7 +70,7 @@ export const useSearchLocationQuery = (query:string) =>{
           const result = await weatherAPI.searchLocation(query)
           return result
         },
-        enabled:query.length > 3 // meanse it will only run when query string contains morw than 3 letters
+        enabled:query.length > 3 // means it will only run when query string contains morw than 3 letters
     })
 }
 
