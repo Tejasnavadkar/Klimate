@@ -1,8 +1,10 @@
 import { CommandDialog, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList, CommandSeparator } from "@/components/ui/command"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { Button } from "./ui/button"
 import { useSearchLocationQuery } from "@/hooks/use-weatherapi"
 import { useNavigate } from "react-router-dom"
+import { useSearchHistory } from "@/hooks/use-search-history"
+import { XCircle } from "lucide-react"
 
 
 
@@ -13,6 +15,7 @@ const CitySearch = () => {
    const navigate = useNavigate()
 
     const {isLoading,data:locations} = useSearchLocationQuery(query)
+    const {History,addToHistory,clearHistory} = useSearchHistory()
 
     console.log('search-location--',locations)
 
@@ -20,16 +23,17 @@ const CitySearch = () => {
           const [lat,lon,name,country] = city.split('|')
 
           // search history
+         addToHistory.mutate({
+            query,
+            lat:parseInt(lat),
+            lon:parseInt(lon),
+            name,
+            country
+        })
 
         setOpen(false)
         navigate(`/city/${name}/?lat=${lat}&lon=${lon}`)
     }
-
-    // useEffect(()=>{
-
-    //     use
-
-    // },[query])
 
     return (
         <>
@@ -50,11 +54,33 @@ const CitySearch = () => {
                         <CommandItem>Calendar</CommandItem>
                     </CommandGroup>
 
-                    <CommandSeparator/>
-
-                    <CommandGroup heading="Reacent Search">
-                        <CommandItem>Calesndar</CommandItem>
+             {  History.length > 0 && 
+                  <>
+                  <CommandSeparator/>
+                    <CommandGroup >
+                        <div className="flex justify-between mb-2 items-center">
+                            <p>Recent Searches..</p>
+                             <Button variant={'outline'} onClick={()=>clearHistory.mutate()}>
+                             <XCircle className="h-6" />
+                               Clear
+                            </Button>   
+                        </div>
+                        {History.map((location)=>{
+                            return  <CommandItem
+                            value={`${location.lat}|${location.lon}|${location.name}|${location.country}`}
+                             onSelect={handleSelect}>
+                               {`${location.name},${location.name},${location.country}`}
+                                {/* <span>
+                                       <span>{location.name}</span><span>{location.state}</span><span>{location.state}</span>
+                                    </span> 
+                                 */
+                                }
+                            </CommandItem>
+                        })}
+                       
                     </CommandGroup>
+                  </>
+                    }
 
                     <CommandSeparator/>
 
@@ -63,7 +89,7 @@ const CitySearch = () => {
                          {locations.map((location)=>{
                             return <CommandItem
                             value={`${location.lat}|${location.lon}|${location.name}|${location.country}`}
-                                     onSelect={handleSelect}>
+                             onSelect={handleSelect}>
                                {`${location.name},${location.state},${location.country}`}
                                 {/* <span>
                                     <span>{location.name}</span><span>{location.state}</span><span>{location.state}</span>
