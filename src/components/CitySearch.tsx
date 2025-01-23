@@ -59,7 +59,7 @@ const CitySearch = () => {
                   <CommandSeparator/>
                     <CommandGroup >
                         <div className="flex justify-between mb-2 items-center">
-                            <p>Recent Searches..</p>
+                            <p className="text-xs text-muted-foreground font-bold">Recent Searches..</p>
                              <Button variant={'outline'} onClick={()=>clearHistory.mutate()}>
                              <XCircle className="h-6" />
                                Clear
