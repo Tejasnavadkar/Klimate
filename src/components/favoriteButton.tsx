@@ -32,7 +32,7 @@ export const FavoriteButton = ({Data}:FavoriteButtonProps) => {
                 country: Data.sys.country,
             })
     
-            toast.success(`Add ${data.name} To Favorites`)
+            toast.success(`Add ${Data.name} To Favorites`)
         }
 
       
